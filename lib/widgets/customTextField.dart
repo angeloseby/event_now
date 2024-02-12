@@ -1,3 +1,4 @@
+import 'package:event_now/helper/regexValidator.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,13 +8,15 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final double fieldWidth, fieldHeight;
   final bool obscureText;
+  final GlobalKey<FormState> formKey;
+  final bool isEmail;
   const CustomTextField({
     super.key,
     required this.iconName,
     required this.hintText,
     required this.fieldWidth,
     required this.fieldHeight,
-    required this.obscureText,
+    required this.obscureText, required this.formKey, this.isEmail = false,
   });
 
   @override
@@ -31,14 +34,37 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: BoxDecoration(
           color: const Color.fromRGBO(75, 22, 128, 1.0),
           borderRadius: BorderRadius.circular(11.0)),
-      child: TextField(
+      child: TextFormField(
+
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter ${widget.hintText}';
+          }else{
+            if(widget.isEmail){
+              if(regexValidateEmail(value)){
+                return null;
+              }else{
+                return "Failed Email Type";
+              }
+            }
+          }
+          return null;
+        },
+
         obscureText: widget.obscureText && !passwordVisible,
         style: GoogleFonts.poppins(
           color: Colors.white,
           fontWeight: FontWeight.w200,
           fontSize: 18,
+
         ),
         decoration: InputDecoration(
+          errorStyle: GoogleFonts.poppins(
+            fontSize: 8.0,
+            color: Colors.red,
+            fontStyle: FontStyle.italic,
+          ),
           suffixIcon: widget.obscureText ? GestureDetector(
             onTap: () {
               setState(() {

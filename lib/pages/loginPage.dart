@@ -10,6 +10,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -45,94 +46,100 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             width: MediaQuery.of(context).size.width * 0.4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                Flex(
-                  direction: Axis.vertical,
-                  children: [
-                    AutoSizeText(
-                      "Welcome Back",
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    CustomTextField(
-                      iconName: FontAwesomeIcons.user,
-                      fieldHeight: screenHeight*0.080,
-                      fieldWidth: screenWidth*0.35,
-                      hintText: "Username",
-                      obscureText: false,
-                    ),
-                    const SizedBox(
-                      height: 25.0,
-                    ),
-                    CustomTextField(
-                      iconName: FontAwesomeIcons.lock,
-                      hintText: "Password",
-                      fieldWidth: screenWidth*0.35,
-                      fieldHeight: screenHeight*0.080,
-                      obscureText: true,
-                    ),
-                    const SizedBox(
-                      height: 12.0,
-                    ),
-                    SizedBox(
-                      width: screenWidth*0.35,
-                      height: screenHeight*0.080,
-                      child: AutoSizeText(
-                        "Forgot Password ?",
-                        textAlign: TextAlign.end,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Flex(
+                    direction: Axis.vertical,
+                    children: [
+                      AutoSizeText(
+                        "Welcome Back",
                         style: GoogleFonts.poppins(
-                          fontStyle: FontStyle.italic,
+                          fontSize: 28,
                           fontWeight: FontWeight.w400,
-                          fontSize: 14,
                           color: Colors.white,
                         ),
                       ),
-                    ),
-                    CustomButton(
-                      buttonText: "Login",
-                      fieldWidth: screenWidth*0.35,
-                      fieldHeight: screenHeight*0.080,
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    SizedBox(
-                      width: 500,
-                      height: 45,
-                      child: AutoSizeText(
-                        "Don't Have an Account, Register",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          color: Colors.white,
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      CustomTextField(
+                        formKey: _formKey,
+                        iconName: FontAwesomeIcons.user,
+                        fieldHeight: screenHeight*0.080,
+                        fieldWidth: screenWidth*0.35,
+                        hintText: "Username",
+                        obscureText: false,
+                      ),
+                      const SizedBox(
+                        height: 25.0,
+                      ),
+                      CustomTextField(
+                        formKey: _formKey,
+                        iconName: FontAwesomeIcons.lock,
+                        hintText: "Password",
+                        fieldWidth: screenWidth*0.35,
+                        fieldHeight: screenHeight*0.080,
+                        obscureText: true,
+                      ),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      SizedBox(
+                        width: screenWidth*0.35,
+                        height: screenHeight*0.080,
+                        child: AutoSizeText(
+                          "Forgot Password ?",
+                          textAlign: TextAlign.end,
+                          style: GoogleFonts.poppins(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Flex(
-                  direction: Axis.vertical,
-                  children: [
-                    Image.asset(
-                      'assets/images/logo_white.png',
-                      width: screenWidth*0.120,
-                    ),
-                  ],
-                ),
-                const Spacer(),
-              ],
+                      CustomButton(
+                        formKey: _formKey,
+                        buttonText: "Login",
+                        fieldWidth: screenWidth*0.35,
+                        fieldHeight: screenHeight*0.080,
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      SizedBox(
+                        width: 500,
+                        height: 45,
+                        child: AutoSizeText(
+                          "Don't Have an Account, Register",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Flex(
+                    direction: Axis.vertical,
+                    children: [
+                      Image.asset(
+                        'assets/images/logo_white.png',
+                        width: screenWidth*0.120,
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                ],
+              ),
             ),
           ),
         ],
