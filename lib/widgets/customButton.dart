@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +23,7 @@ class CustomButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(11.0),
       ),
       child: Center(
-        child: Text(
+        child: AutoSizeText(
           buttonText,
           style: GoogleFonts.poppins(
             fontSize: 20,

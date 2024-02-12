@@ -1,12 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:event_now/widgets/customButton.dart';
-import 'package:event_now/widgets/customTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+import '../widgets/customButton.dart';
+import '../widgets/customTextField.dart';
+
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class LoginPage extends StatelessWidget {
                   direction: Axis.vertical,
                   children: [
                     AutoSizeText(
-                      "Welcome Back",
+                      "Welcome",
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.w400,
@@ -68,6 +69,16 @@ class LoginPage extends StatelessWidget {
                       fieldHeight: screenHeight*0.080,
                       fieldWidth: screenWidth*0.35,
                       hintText: "Username",
+                      obscureText: false,
+                    ),
+                    const SizedBox(
+                      height: 25.0,
+                    ),
+                    CustomTextField(
+                      iconName: FontAwesomeIcons.envelope,
+                      hintText: "Email",
+                      fieldWidth: screenWidth*0.35,
+                      fieldHeight: screenHeight*0.080,
                       obscureText: false,
                     ),
                     const SizedBox(
