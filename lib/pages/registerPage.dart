@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:event_now/helper/registerUser.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,9 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
+    final TextEditingController usernameController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -68,6 +72,7 @@ class RegisterPage extends StatelessWidget {
                         height: 20.0,
                       ),
                       CustomTextField(
+                        controller: usernameController,
                         formKey: _formKey,
                         iconName: FontAwesomeIcons.user,
                         fieldHeight: screenHeight*0.080,
@@ -79,6 +84,7 @@ class RegisterPage extends StatelessWidget {
                         height: 25.0,
                       ),
                       CustomTextField(
+                        controller: emailController,
                         isEmail: true,
                         formKey: _formKey,
                         iconName: FontAwesomeIcons.envelope,
@@ -91,6 +97,7 @@ class RegisterPage extends StatelessWidget {
                         height: 25.0,
                       ),
                       CustomTextField(
+                        controller: passwordController,
                         formKey: _formKey,
                         iconName: FontAwesomeIcons.lock,
                         hintText: "Password",
@@ -116,8 +123,12 @@ class RegisterPage extends StatelessWidget {
                         ),
                       ),
                       CustomButton(
+                        buttonPress: (){
+                          print("Button Pressed !");
+                          print("Usernmae = ${usernameController.text}");
+                        },
                         formKey: _formKey,
-                        buttonText: "Login",
+                        buttonText: "Register",
                         fieldWidth: screenWidth*0.35,
                         fieldHeight: screenHeight*0.080,
                       ),
@@ -128,7 +139,7 @@ class RegisterPage extends StatelessWidget {
                         width: 500,
                         height: 45,
                         child: AutoSizeText(
-                          "Don't Have an Account, Register",
+                          "Already Have an Account ? Login.",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             fontStyle: FontStyle.normal,

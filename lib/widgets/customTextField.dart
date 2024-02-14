@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatefulWidget {
+  final TextEditingController controller;
   final IconData iconName;
   final String hintText;
   final double fieldWidth, fieldHeight;
@@ -16,7 +17,10 @@ class CustomTextField extends StatefulWidget {
     required this.hintText,
     required this.fieldWidth,
     required this.fieldHeight,
-    required this.obscureText, required this.formKey, this.isEmail = false,
+    required this.obscureText,
+    required this.formKey,
+    this.isEmail = false,
+    required this.controller,
   });
 
   @override
@@ -35,29 +39,27 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: const Color.fromRGBO(75, 22, 128, 1.0),
           borderRadius: BorderRadius.circular(11.0)),
       child: TextFormField(
-
+        controller: widget.controller,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter ${widget.hintText}';
-          }else{
-            if(widget.isEmail){
-              if(regexValidateEmail(value)){
+          } else {
+            if (widget.isEmail) {
+              if (regexValidateEmail(value)) {
                 return null;
-              }else{
+              } else {
                 return "Failed Email Type";
               }
             }
           }
           return null;
         },
-
         obscureText: widget.obscureText && !passwordVisible,
         style: GoogleFonts.poppins(
           color: Colors.white,
           fontWeight: FontWeight.w200,
           fontSize: 18,
-
         ),
         decoration: InputDecoration(
           errorStyle: GoogleFonts.poppins(
@@ -65,24 +67,26 @@ class _CustomTextFieldState extends State<CustomTextField> {
             color: Colors.red,
             fontStyle: FontStyle.italic,
           ),
-          suffixIcon: widget.obscureText ? GestureDetector(
-            onTap: () {
-              setState(() {
-                passwordVisible
-                    ? passwordVisible = false
-                    : passwordVisible = true;
-              });
-            },
-            child: passwordVisible
-                ? const FaIcon(
-                    FontAwesomeIcons.eyeSlash,
-                    size: 20.0,
-                  )
-                : const FaIcon(
-                    FontAwesomeIcons.eye,
-                    size: 20.0,
-                  ),
-          ):null,
+          suffixIcon: widget.obscureText
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      passwordVisible
+                          ? passwordVisible = false
+                          : passwordVisible = true;
+                    });
+                  },
+                  child: passwordVisible
+                      ? const FaIcon(
+                          FontAwesomeIcons.eyeSlash,
+                          size: 20.0,
+                        )
+                      : const FaIcon(
+                          FontAwesomeIcons.eye,
+                          size: 20.0,
+                        ),
+                )
+              : null,
           suffixIconColor: Colors.white,
           suffixIconConstraints: const BoxConstraints(),
           icon: FaIcon(

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:event_now/helper/registerUser.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -6,23 +7,19 @@ class CustomButton extends StatelessWidget {
   final String buttonText;
   final double fieldWidth, fieldHeight;
   final GlobalKey<FormState> formKey;
+  final void Function()? buttonPress;
   const CustomButton({
     super.key,
     required this.buttonText,
     required this.fieldWidth,
-    required this.fieldHeight, required this.formKey,
+    required this.fieldHeight,
+    required this.formKey, this.buttonPress,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        if (formKey.currentState!.validate()) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Processing Data')),
-          );
-        }
-      },
+      onTap: buttonPress,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         width: fieldWidth,

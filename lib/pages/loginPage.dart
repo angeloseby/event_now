@@ -10,6 +10,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController usernameController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
     final _formKey = GlobalKey<FormState>();
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -67,6 +69,7 @@ class LoginPage extends StatelessWidget {
                         height: 20.0,
                       ),
                       CustomTextField(
+                        controller: usernameController,
                         formKey: _formKey,
                         iconName: FontAwesomeIcons.user,
                         fieldHeight: screenHeight*0.080,
@@ -78,6 +81,7 @@ class LoginPage extends StatelessWidget {
                         height: 25.0,
                       ),
                       CustomTextField(
+                        controller: passwordController,
                         formKey: _formKey,
                         iconName: FontAwesomeIcons.lock,
                         hintText: "Password",
