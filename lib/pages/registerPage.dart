@@ -1,18 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:event_now/helper/registerUser.dart';
+import 'package:event_now/widgets/customSnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/customButton.dart';
 import '../widgets/customTextField.dart';
+import 'homePage.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     final TextEditingController usernameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
@@ -24,18 +26,18 @@ class RegisterPage extends StatelessWidget {
           //Left Side Screen
           Container(
             color: const Color.fromRGBO(253, 253, 253, 1.0),
-            width: screenWidth* 0.6,
+            width: screenWidth * 0.6,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
                   'assets/images/startup_illustration.png',
-                  width: screenWidth*0.3,
+                  width: screenWidth * 0.3,
                 ),
                 Image.asset(
                   'assets/images/logo_with_tagline.png',
-                  width: screenWidth*0.3,
+                  width: screenWidth * 0.3,
                 ),
               ],
             ),
@@ -52,7 +54,7 @@ class RegisterPage extends StatelessWidget {
             ),
             width: MediaQuery.of(context).size.width * 0.4,
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -73,10 +75,10 @@ class RegisterPage extends StatelessWidget {
                       ),
                       CustomTextField(
                         controller: usernameController,
-                        formKey: _formKey,
+                        formKey: formKey,
                         iconName: FontAwesomeIcons.user,
-                        fieldHeight: screenHeight*0.080,
-                        fieldWidth: screenWidth*0.35,
+                        fieldHeight: screenHeight * 0.080,
+                        fieldWidth: screenWidth * 0.35,
                         hintText: "Username",
                         obscureText: false,
                       ),
@@ -86,11 +88,11 @@ class RegisterPage extends StatelessWidget {
                       CustomTextField(
                         controller: emailController,
                         isEmail: true,
-                        formKey: _formKey,
+                        formKey: formKey,
                         iconName: FontAwesomeIcons.envelope,
                         hintText: "Email",
-                        fieldWidth: screenWidth*0.35,
-                        fieldHeight: screenHeight*0.080,
+                        fieldWidth: screenWidth * 0.35,
+                        fieldHeight: screenHeight * 0.080,
                         obscureText: false,
                       ),
                       const SizedBox(
@@ -98,19 +100,19 @@ class RegisterPage extends StatelessWidget {
                       ),
                       CustomTextField(
                         controller: passwordController,
-                        formKey: _formKey,
+                        formKey: formKey,
                         iconName: FontAwesomeIcons.lock,
                         hintText: "Password",
-                        fieldWidth: screenWidth*0.35,
-                        fieldHeight: screenHeight*0.080,
+                        fieldWidth: screenWidth * 0.35,
+                        fieldHeight: screenHeight * 0.080,
                         obscureText: true,
                       ),
                       const SizedBox(
                         height: 12.0,
                       ),
                       SizedBox(
-                        width: screenWidth*0.35,
-                        height: screenHeight*0.080,
+                        width: screenWidth * 0.35,
+                        height: screenHeight * 0.080,
                         child: AutoSizeText(
                           "Forgot Password ?",
                           textAlign: TextAlign.end,
@@ -123,14 +125,22 @@ class RegisterPage extends StatelessWidget {
                         ),
                       ),
                       CustomButton(
-                        buttonPress: (){
-                          print("Button Pressed !");
-                          print("Usernmae = ${usernameController.text}");
+                        buttonPress: () async {
+                          if(formKey.currentState!.validate()){
+                            if (await register(
+                                emailController.text, passwordController.text)) {
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomePage()), (route) => false);
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(customSnackBar("Can't add the user", screenWidth*0.5, Colors.red.shade900));
+                            }
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(customSnackBar("Error in the details entered", screenWidth*0.5, Colors.red.shade900));
+                          }
                         },
-                        formKey: _formKey,
+                        formKey: formKey,
                         buttonText: "Register",
-                        fieldWidth: screenWidth*0.35,
-                        fieldHeight: screenHeight*0.080,
+                        fieldWidth: screenWidth * 0.35,
+                        fieldHeight: screenHeight * 0.080,
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -157,7 +167,7 @@ class RegisterPage extends StatelessWidget {
                     children: [
                       Image.asset(
                         'assets/images/logo_white.png',
-                        width: screenWidth*0.120,
+                        width: screenWidth * 0.120,
                       ),
                     ],
                   ),

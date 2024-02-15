@@ -1,25 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logger/logger.dart';
 
-Future<bool> registerUser(String username, String password, String email) async {
+Logger logger = Logger();
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+Future<bool> register(String email, String password) async {
   try {
-    final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+    logger.d("User Created Successfully");
     return true;
   } on FirebaseAuthException catch (e) {
-    if (e.message!.contains("weak-password")) {
-      print('The password provided is too weak.');
-    } else if (e.message!.contains("email-already-in-use")) {
-      print('The account already exists for that email.');
-    }else{
-      print("Some other exception");
-      print("Exception Code : ${e.code}");
-      print("Exception Message : ${e.message}");
-    }
+    logger.d("An error occurred during firebase registration.");
     return false;
   } catch (e) {
-    print("Unknown Exception");
+    logger.d("Unknown error occurred !");
     return false;
   }
 }
