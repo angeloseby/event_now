@@ -5,14 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../services/authMethods.dart';
+import '../widgets/customSnackBar.dart';
+import 'homePage.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController usernameController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -21,18 +25,18 @@ class LoginPage extends StatelessWidget {
           //Left Side Screen
           Container(
             color: const Color.fromRGBO(253, 253, 253, 1.0),
-            width: screenWidth* 0.6,
+            width: screenWidth * 0.6,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
                   'assets/images/startup_illustration.png',
-                  width: screenWidth*0.3,
+                  width: screenWidth * 0.3,
                 ),
                 Image.asset(
                   'assets/images/logo_with_tagline.png',
-                  width: screenWidth*0.3,
+                  width: screenWidth * 0.3,
                 ),
               ],
             ),
@@ -49,7 +53,7 @@ class LoginPage extends StatelessWidget {
             ),
             width: MediaQuery.of(context).size.width * 0.4,
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -69,32 +73,33 @@ class LoginPage extends StatelessWidget {
                         height: 20.0,
                       ),
                       CustomTextField(
-                        controller: usernameController,
-                        formKey: _formKey,
+                        controller: emailController,
+                        formKey: formKey,
                         iconName: FontAwesomeIcons.user,
-                        fieldHeight: screenHeight*0.080,
-                        fieldWidth: screenWidth*0.35,
-                        hintText: "Username",
+                        fieldHeight: screenHeight * 0.080,
+                        fieldWidth: screenWidth * 0.35,
+                        hintText: "Email",
                         obscureText: false,
+                        isEmail: true,
                       ),
                       const SizedBox(
                         height: 25.0,
                       ),
                       CustomTextField(
                         controller: passwordController,
-                        formKey: _formKey,
+                        formKey: formKey,
                         iconName: FontAwesomeIcons.lock,
                         hintText: "Password",
-                        fieldWidth: screenWidth*0.35,
-                        fieldHeight: screenHeight*0.080,
+                        fieldWidth: screenWidth * 0.35,
+                        fieldHeight: screenHeight * 0.080,
                         obscureText: true,
                       ),
                       const SizedBox(
                         height: 12.0,
                       ),
                       SizedBox(
-                        width: screenWidth*0.35,
-                        height: screenHeight*0.080,
+                        width: screenWidth * 0.35,
+                        height: screenHeight * 0.080,
                         child: AutoSizeText(
                           "Forgot Password ?",
                           textAlign: TextAlign.end,
@@ -107,10 +112,31 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       CustomButton(
-                        formKey: _formKey,
+                        buttonPress: () async {
+                          if (formKey.currentState!.validate()) {
+                            if (await AuthMethods.logInUser(
+                                password: passwordController.text,
+                                email: emailController.text)) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()),
+                                  (route) => false);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  customSnackBar("Can't login to account",
+                                      screenWidth * 0.5, Colors.red.shade900));
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                customSnackBar("Error in the details entered",
+                                    screenWidth * 0.5, Colors.red.shade900));
+                          }
+                        },
+                        formKey: formKey,
                         buttonText: "Login",
-                        fieldWidth: screenWidth*0.35,
-                        fieldHeight: screenHeight*0.080,
+                        fieldWidth: screenWidth * 0.35,
+                        fieldHeight: screenHeight * 0.080,
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -137,7 +163,7 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Image.asset(
                         'assets/images/logo_white.png',
-                        width: screenWidth*0.120,
+                        width: screenWidth * 0.120,
                       ),
                     ],
                   ),

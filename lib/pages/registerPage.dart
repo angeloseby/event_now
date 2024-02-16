@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:event_now/helper/registerUser.dart';
+import 'package:event_now/services/authMethods.dart';
 import 'package:event_now/widgets/customSnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,7 +15,6 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
-    final TextEditingController usernameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     double screenHeight = MediaQuery.of(context).size.height;
@@ -73,15 +72,6 @@ class RegisterPage extends StatelessWidget {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      CustomTextField(
-                        controller: usernameController,
-                        formKey: formKey,
-                        iconName: FontAwesomeIcons.user,
-                        fieldHeight: screenHeight * 0.080,
-                        fieldWidth: screenWidth * 0.35,
-                        hintText: "Username",
-                        obscureText: false,
-                      ),
                       const SizedBox(
                         height: 25.0,
                       ),
@@ -126,15 +116,24 @@ class RegisterPage extends StatelessWidget {
                       ),
                       CustomButton(
                         buttonPress: () async {
-                          if(formKey.currentState!.validate()){
-                            if (await register(
-                                emailController.text, passwordController.text)) {
-                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomePage()), (route) => false);
-                            }else{
-                              ScaffoldMessenger.of(context).showSnackBar(customSnackBar("Can't add the user", screenWidth*0.5, Colors.red.shade900));
+                          if (formKey.currentState!.validate()) {
+                            if (await AuthMethods.registerUser(
+                                password: passwordController.text,
+                                email: emailController.text)) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()),
+                                  (route) => false);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  customSnackBar("Can't add the user",
+                                      screenWidth * 0.5, Colors.red.shade900));
                             }
-                          }else{
-                            ScaffoldMessenger.of(context).showSnackBar(customSnackBar("Error in the details entered", screenWidth*0.5, Colors.red.shade900));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                customSnackBar("Error in the details entered",
+                                    screenWidth * 0.5, Colors.red.shade900));
                           }
                         },
                         formKey: formKey,
