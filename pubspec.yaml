@@ -40,7 +40,7 @@ dependencies:
   firebase_core: 
   firebase_auth: 
   logger: ^2.0.2+1
-  lottie: ^3.0.0
+  lottie: 
   provider: ^6.1.1
 
 dev_dependencies:

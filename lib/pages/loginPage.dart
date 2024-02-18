@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:event_now/pages/homePage.dart';
+import 'package:event_now/pages/registerPage.dart';
 import 'package:event_now/services/authServices.dart';
 import 'package:event_now/widgets/customButton.dart';
 import 'package:event_now/widgets/customTextField.dart';
@@ -120,12 +120,11 @@ class LoginPage extends StatelessWidget {
                                     password: passwordController.text,
                                     email: emailController.text);
                             if (_authStatusResult != null) {
-                              print(_authStatusResult.uid);
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()),
-                                  (route) => false);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  customSnackBar(
+                                      "Login Succesfull",
+                                      screenWidth * 0.5,
+                                      Colors.green.shade900));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   customSnackBar("Can't login to account",
@@ -147,14 +146,22 @@ class LoginPage extends StatelessWidget {
                       SizedBox(
                         width: 500,
                         height: 45,
-                        child: AutoSizeText(
-                          "Don't Have an Account, Register",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const RegisterPage();
+                            }));
+                          },
+                          child: AutoSizeText(
+                            "Don't Have an Account, Register",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),

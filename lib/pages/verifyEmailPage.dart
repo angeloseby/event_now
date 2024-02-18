@@ -1,14 +1,25 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:event_now/services/authServices.dart';
+import 'package:event_now/utils/emailWrapper.dart';
 import 'package:event_now/widgets/customButton.dart';
+import 'package:event_now/widgets/customSnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
-class VerifyEmailPage extends StatelessWidget {
+class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});
 
   @override
+  State<VerifyEmailPage> createState() => _VerifyEmailPageState();
+}
+
+class _VerifyEmailPageState extends State<VerifyEmailPage> {
+  bool _verificationMailSend = false;
+  @override
   Widget build(BuildContext context) {
+    final _authService = Provider.of<AuthService>(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -73,37 +84,37 @@ class VerifyEmailPage extends StatelessWidget {
                   const SizedBox(
                     height: 25,
                   ),
-                  AutoSizeText.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Entered E-Mail\n",
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: const Color.fromRGBO(51, 51, 51, 1.0),
-                          ),
-                        ),
-                        TextSpan(
-                          text: "username@gmail.com",
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: const Color.fromRGBO(51, 51, 51, 1.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  const EmailWrapper(),
                   const SizedBox(
                     height: 25,
                   ),
                   CustomButton(
-                    buttonText: "Send Verification Mail",
+                    buttonPress: () async {
+                      if (_verificationMailSend) {
+                        print("Clicked");
+                        if (_authService.checkEmailVerified()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              customSnackBar("Email Verified Successfully",
+                                  screenWidth * 0.5, Colors.green.shade900));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              customSnackBar("Login To Continue",
+                                  screenWidth * 0.5, Colors.blue));
+                          _authService.signOutUser();
+                        }
+                      } else {
+                        _verificationMailSend =
+                            await _authService.sendVerificationMail();
+                        setState(() {});
+                      }
+                    },
+                    buttonText: _verificationMailSend
+                        ? "Already Verified, Click Here"
+                        : "Send Verification Mail",
                     buttonWidth: screenWidth * 0.21,
                     buttonHeight: screenHeight * 0.05,
-                    buttonBgColor: const Color.fromRGBO(102, 45, 145, 1.0),
+                    buttonBgColor: _verificationMailSend
+                        ? Colors.green.shade900
+                        : const Color.fromRGBO(102, 45, 145, 1.0),
                     buttonTextColor: Colors.white,
                   )
                 ],

@@ -10,7 +10,11 @@ class AuthService {
   //create custom user model based on firebase user
   AppUser? _userFromFirebaseUser(User? user) {
     return user != null
-        ? AppUser(uid: user.uid, isEmailVerified: user.emailVerified)
+        ? AppUser(
+            uid: user.uid,
+            isEmailVerified: user.emailVerified,
+            email: user.email,
+          )
         : null;
   }
 
@@ -30,7 +34,7 @@ class AuthService {
       logger.d("User Created Successfully");
       final _firebaseUser = _firebaseUserCred.user;
       return _userFromFirebaseUser(_firebaseUser);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       logger.d("An error occurred during firebase registration.");
       return null;
     } catch (e) {
@@ -50,7 +54,7 @@ class AuthService {
       logger.d("Login Successful");
       final _firebaseUser = _firebaseUserCred.user;
       return _userFromFirebaseUser(_firebaseUser);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       logger.e("An error occurred during firebase login.");
       return null;
     } catch (err) {
@@ -59,12 +63,28 @@ class AuthService {
     }
   }
 
-  Future signOutUser() async {
+  Future<void> signOutUser() async {
     try {
       await _auth.signOut();
       logger.d("Sign Out Succesfull");
     } catch (e) {
       logger.e("Can't perform signout !");
     }
+  }
+
+  Future<bool> sendVerificationMail() async {
+    try {
+      await _auth.currentUser!.sendEmailVerification();
+      logger.d("Verification email send successfullyy");
+      return true;
+    } catch (e) {
+      logger.e("Can't send! ${e.toString()}");
+      return false;
+    }
+  }
+
+  bool checkEmailVerified() {
+    _auth.currentUser!.reload();
+    return _auth.currentUser!.emailVerified;
   }
 }

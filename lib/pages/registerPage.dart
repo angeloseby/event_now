@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:event_now/pages/homePage.dart';
+import 'package:event_now/pages/loginPage.dart';
 import 'package:event_now/services/authServices.dart';
 import 'package:event_now/widgets/customSnackBar.dart';
 import 'package:flutter/material.dart';
@@ -123,12 +123,12 @@ class RegisterPage extends StatelessWidget {
                                     password: passwordController.text,
                                     email: emailController.text);
                             if (_authStatusResult != null) {
-                              print(_authStatusResult.uid);
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()),
-                                  (route) => false);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  customSnackBar(
+                                      "User created succesfully",
+                                      screenWidth * 0.5,
+                                      Colors.green.shade900));
+                              Navigator.pop(context);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   customSnackBar("Can't add the user",
@@ -150,14 +150,22 @@ class RegisterPage extends StatelessWidget {
                       SizedBox(
                         width: 500,
                         height: 45,
-                        child: AutoSizeText(
-                          "Already Have an Account ? Login.",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const LoginPage();
+                            }));
+                          },
+                          child: AutoSizeText(
+                            "Already Have an Account ? Login.",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
