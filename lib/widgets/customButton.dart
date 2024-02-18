@@ -4,15 +4,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   final String buttonText;
-  final double fieldWidth, fieldHeight;
-  final GlobalKey<FormState> formKey;
+  final double buttonWidth, buttonHeight;
   final void Function()? buttonPress;
+  final Color buttonBgColor;
+  final Color buttonTextColor;
   const CustomButton({
     super.key,
     required this.buttonText,
-    required this.fieldWidth,
-    required this.fieldHeight,
-    required this.formKey, this.buttonPress,
+    required this.buttonWidth,
+    required this.buttonHeight,
+    this.buttonPress,
+    this.buttonBgColor = const Color.fromRGBO(75, 22, 128, 1.0),
+    this.buttonTextColor = Colors.white,
   });
 
   @override
@@ -21,10 +24,10 @@ class CustomButton extends StatelessWidget {
       onTap: buttonPress,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        width: fieldWidth,
-        height: fieldHeight,
+        width: buttonWidth,
+        height: buttonHeight,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: buttonBgColor,
           borderRadius: BorderRadius.circular(11.0),
         ),
         child: Center(
@@ -33,7 +36,7 @@ class CustomButton extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.w500,
-              color: const Color.fromRGBO(75, 22, 128, 1.0),
+              color: buttonTextColor,
             ),
           ),
         ),

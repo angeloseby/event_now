@@ -38,69 +38,71 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: BoxDecoration(
           color: const Color.fromRGBO(75, 22, 128, 1.0),
           borderRadius: BorderRadius.circular(11.0)),
-      child: TextFormField(
-        controller: widget.controller,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter ${widget.hintText}';
-          } else {
-            if (widget.isEmail) {
-              if (regexValidateEmail(value)) {
-                return null;
-              } else {
-                return "Failed Email Type";
+      child: Center(
+        child: TextFormField(
+          controller: widget.controller,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter ${widget.hintText}';
+            } else {
+              if (widget.isEmail) {
+                if (regexValidateEmail(value)) {
+                  return null;
+                } else {
+                  return "Failed Email Type";
+                }
               }
             }
-          }
-          return null;
-        },
-        obscureText: widget.obscureText && !passwordVisible,
-        style: GoogleFonts.poppins(
-          color: Colors.white,
-          fontWeight: FontWeight.w200,
-          fontSize: 18,
-        ),
-        decoration: InputDecoration(
-          errorStyle: GoogleFonts.poppins(
-            fontSize: 8.0,
-            color: Colors.red,
-            fontStyle: FontStyle.italic,
-          ),
-          suffixIcon: widget.obscureText
-              ? GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      passwordVisible
-                          ? passwordVisible = false
-                          : passwordVisible = true;
-                    });
-                  },
-                  child: passwordVisible
-                      ? const FaIcon(
-                          FontAwesomeIcons.eyeSlash,
-                          size: 20.0,
-                        )
-                      : const FaIcon(
-                          FontAwesomeIcons.eye,
-                          size: 20.0,
-                        ),
-                )
-              : null,
-          suffixIconColor: Colors.white,
-          suffixIconConstraints: const BoxConstraints(),
-          icon: FaIcon(
-            widget.iconName,
+            return null;
+          },
+          obscureText: widget.obscureText && !passwordVisible,
+          style: GoogleFonts.poppins(
             color: Colors.white,
-            size: 20.0,
+            fontWeight: FontWeight.w200,
+            fontSize: 18,
           ),
-          hintText: widget.hintText,
-          hintStyle: GoogleFonts.poppins(
-            fontWeight: FontWeight.w100,
-            fontStyle: FontStyle.italic,
-            color: Colors.white,
+          decoration: InputDecoration(
+            errorStyle: GoogleFonts.poppins(
+              fontSize: 8.0,
+              color: Colors.red,
+              fontStyle: FontStyle.italic,
+            ),
+            suffixIcon: widget.obscureText
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        passwordVisible
+                            ? passwordVisible = false
+                            : passwordVisible = true;
+                      });
+                    },
+                    child: passwordVisible
+                        ? const FaIcon(
+                            FontAwesomeIcons.eyeSlash,
+                            size: 20.0,
+                          )
+                        : const FaIcon(
+                            FontAwesomeIcons.eye,
+                            size: 20.0,
+                          ),
+                  )
+                : null,
+            suffixIconColor: Colors.white,
+            suffixIconConstraints: const BoxConstraints(),
+            icon: FaIcon(
+              widget.iconName,
+              color: Colors.white,
+              size: 20.0,
+            ),
+            hintText: widget.hintText,
+            hintStyle: GoogleFonts.poppins(
+              fontWeight: FontWeight.w100,
+              fontStyle: FontStyle.italic,
+              color: Colors.white,
+            ),
+            border: InputBorder.none,
           ),
-          border: InputBorder.none,
         ),
       ),
     );

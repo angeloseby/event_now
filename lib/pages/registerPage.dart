@@ -1,19 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:event_now/services/authMethods.dart';
+import 'package:event_now/pages/homePage.dart';
+import 'package:event_now/services/authServices.dart';
 import 'package:event_now/widgets/customSnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:provider/provider.dart';
 import '../widgets/customButton.dart';
 import '../widgets/customTextField.dart';
-import 'homePage.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final _authService = Provider.of<AuthService>(context);
     final formKey = GlobalKey<FormState>();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
@@ -117,9 +118,12 @@ class RegisterPage extends StatelessWidget {
                       CustomButton(
                         buttonPress: () async {
                           if (formKey.currentState!.validate()) {
-                            if (await AuthMethods.registerUser(
-                                password: passwordController.text,
-                                email: emailController.text)) {
+                            final _authStatusResult =
+                                await _authService.registerUser(
+                                    password: passwordController.text,
+                                    email: emailController.text);
+                            if (_authStatusResult != null) {
+                              print(_authStatusResult.uid);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
@@ -136,10 +140,9 @@ class RegisterPage extends StatelessWidget {
                                     screenWidth * 0.5, Colors.red.shade900));
                           }
                         },
-                        formKey: formKey,
                         buttonText: "Register",
-                        fieldWidth: screenWidth * 0.35,
-                        fieldHeight: screenHeight * 0.080,
+                        buttonWidth: screenWidth * 0.35,
+                        buttonHeight: screenHeight * 0.080,
                       ),
                       const SizedBox(
                         height: 20.0,
