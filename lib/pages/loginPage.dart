@@ -1,19 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:event_now/pages/registerPage.dart';
+import 'package:event_now/services/authServices.dart';
 import 'package:event_now/widgets/customButton.dart';
 import 'package:event_now/widgets/customTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../services/authMethods.dart';
+import 'package:provider/provider.dart';
 import '../widgets/customSnackBar.dart';
-import 'homePage.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final _authService = Provider.of<AuthService>(context);
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final formKey = GlobalKey<FormState>();
@@ -114,14 +115,16 @@ class LoginPage extends StatelessWidget {
                       CustomButton(
                         buttonPress: () async {
                           if (formKey.currentState!.validate()) {
-                            if (await AuthMethods.logInUser(
-                                password: passwordController.text,
-                                email: emailController.text)) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()),
-                                  (route) => false);
+                            final _authStatusResult =
+                                await _authService.logInUser(
+                                    password: passwordController.text,
+                                    email: emailController.text);
+                            if (_authStatusResult != null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  customSnackBar(
+                                      "Login Succesfull",
+                                      screenWidth * 0.5,
+                                      Colors.green.shade900));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   customSnackBar("Can't login to account",
@@ -133,10 +136,9 @@ class LoginPage extends StatelessWidget {
                                     screenWidth * 0.5, Colors.red.shade900));
                           }
                         },
-                        formKey: formKey,
                         buttonText: "Login",
-                        fieldWidth: screenWidth * 0.35,
-                        fieldHeight: screenHeight * 0.080,
+                        buttonWidth: screenWidth * 0.35,
+                        buttonHeight: screenHeight * 0.080,
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -144,14 +146,22 @@ class LoginPage extends StatelessWidget {
                       SizedBox(
                         width: 500,
                         height: 45,
-                        child: AutoSizeText(
-                          "Don't Have an Account, Register",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const RegisterPage();
+                            }));
+                          },
+                          child: AutoSizeText(
+                            "Don't Have an Account, Register",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),

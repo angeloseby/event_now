@@ -1,19 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:event_now/services/authMethods.dart';
+import 'package:event_now/pages/loginPage.dart';
+import 'package:event_now/services/authServices.dart';
 import 'package:event_now/widgets/customSnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:provider/provider.dart';
 import '../widgets/customButton.dart';
 import '../widgets/customTextField.dart';
-import 'homePage.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final _authService = Provider.of<AuthService>(context);
     final formKey = GlobalKey<FormState>();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
@@ -117,14 +118,17 @@ class RegisterPage extends StatelessWidget {
                       CustomButton(
                         buttonPress: () async {
                           if (formKey.currentState!.validate()) {
-                            if (await AuthMethods.registerUser(
-                                password: passwordController.text,
-                                email: emailController.text)) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()),
-                                  (route) => false);
+                            final _authStatusResult =
+                                await _authService.registerUser(
+                                    password: passwordController.text,
+                                    email: emailController.text);
+                            if (_authStatusResult != null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  customSnackBar(
+                                      "User created succesfully",
+                                      screenWidth * 0.5,
+                                      Colors.green.shade900));
+                              Navigator.pop(context);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   customSnackBar("Can't add the user",
@@ -136,10 +140,9 @@ class RegisterPage extends StatelessWidget {
                                     screenWidth * 0.5, Colors.red.shade900));
                           }
                         },
-                        formKey: formKey,
                         buttonText: "Register",
-                        fieldWidth: screenWidth * 0.35,
-                        fieldHeight: screenHeight * 0.080,
+                        buttonWidth: screenWidth * 0.35,
+                        buttonHeight: screenHeight * 0.080,
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -147,14 +150,22 @@ class RegisterPage extends StatelessWidget {
                       SizedBox(
                         width: 500,
                         height: 45,
-                        child: AutoSizeText(
-                          "Already Have an Account ? Login.",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const LoginPage();
+                            }));
+                          },
+                          child: AutoSizeText(
+                            "Already Have an Account ? Login.",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
