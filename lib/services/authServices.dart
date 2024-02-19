@@ -13,7 +13,7 @@ class AuthService {
         ? AppUser(
             uid: user.uid,
             isEmailVerified: user.emailVerified,
-            email: user.email,
+            email: user.email == null ? "anonymous" : user.email.toString(),
           )
         : null;
   }
@@ -23,17 +23,21 @@ class AuthService {
     return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
+  AppUser? get userProfile {
+    return _userFromFirebaseUser(_auth.currentUser);
+  }
+
   //Register the user
   Future<AppUser?> registerUser({
     required String email,
     required String password,
   }) async {
     try {
-      final _firebaseUserCred = await _auth.createUserWithEmailAndPassword(
+      final firebaseUserCred = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       logger.d("User Created Successfully");
-      final _firebaseUser = _firebaseUserCred.user;
-      return _userFromFirebaseUser(_firebaseUser);
+      final firebaseUser = firebaseUserCred.user;
+      return _userFromFirebaseUser(firebaseUser);
     } on FirebaseAuthException {
       logger.d("An error occurred during firebase registration.");
       return null;
@@ -49,11 +53,11 @@ class AuthService {
     required String password,
   }) async {
     try {
-      final _firebaseUserCred = await _auth.signInWithEmailAndPassword(
+      final firebaseUserCred = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       logger.d("Login Successful");
-      final _firebaseUser = _firebaseUserCred.user;
-      return _userFromFirebaseUser(_firebaseUser);
+      final firebaseUser = firebaseUserCred.user;
+      return _userFromFirebaseUser(firebaseUser);
     } on FirebaseAuthException {
       logger.e("An error occurred during firebase login.");
       return null;
@@ -66,16 +70,16 @@ class AuthService {
   Future<void> signOutUser() async {
     try {
       await _auth.signOut();
-      logger.d("Sign Out Succesfull");
+      logger.d("Sign Out Successful");
     } catch (e) {
-      logger.e("Can't perform signout !");
+      logger.e("Can't perform sign-out !");
     }
   }
 
   Future<bool> sendVerificationMail() async {
     try {
       await _auth.currentUser!.sendEmailVerification();
-      logger.d("Verification email send successfullyy");
+      logger.d("Verification email send successfully");
       return true;
     } catch (e) {
       logger.e("Can't send! ${e.toString()}");

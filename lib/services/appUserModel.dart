@@ -1,6 +1,6 @@
 class AppUser {
   final String uid;
-  final String? email;
+  final String email;
   final bool isEmailVerified;
 
   AppUser({

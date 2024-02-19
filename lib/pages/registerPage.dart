@@ -14,7 +14,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _authService = Provider.of<AuthService>(context);
+    final authService = Provider.of<AuthService>(context);
     final formKey = GlobalKey<FormState>();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
@@ -118,14 +118,14 @@ class RegisterPage extends StatelessWidget {
                       CustomButton(
                         buttonPress: () async {
                           if (formKey.currentState!.validate()) {
-                            final _authStatusResult =
-                                await _authService.registerUser(
+                            final authStatusResult =
+                                await authService.registerUser(
                                     password: passwordController.text,
                                     email: emailController.text);
-                            if (_authStatusResult != null) {
+                            if (authStatusResult != null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   customSnackBar(
-                                      "User created succesfully",
+                                      "User created successfully",
                                       screenWidth * 0.5,
                                       Colors.green.shade900));
                               Navigator.pop(context);

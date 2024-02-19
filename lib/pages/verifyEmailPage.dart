@@ -19,7 +19,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   bool _verificationMailSend = false;
   @override
   Widget build(BuildContext context) {
-    final _authService = Provider.of<AuthService>(context);
+    final authService = Provider.of<AuthService>(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -91,19 +91,18 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   CustomButton(
                     buttonPress: () async {
                       if (_verificationMailSend) {
-                        print("Clicked");
-                        if (_authService.checkEmailVerified()) {
+                        if (authService.checkEmailVerified()) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               customSnackBar("Email Verified Successfully",
                                   screenWidth * 0.5, Colors.green.shade900));
                           ScaffoldMessenger.of(context).showSnackBar(
                               customSnackBar("Login To Continue",
                                   screenWidth * 0.5, Colors.blue));
-                          _authService.signOutUser();
+                          authService.signOutUser();
                         }
                       } else {
                         _verificationMailSend =
-                            await _authService.sendVerificationMail();
+                            await authService.sendVerificationMail();
                         setState(() {});
                       }
                     },

@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _authService = Provider.of<AuthService>(context);
+    final authService = Provider.of<AuthService>(context);
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final formKey = GlobalKey<FormState>();
@@ -115,14 +115,14 @@ class LoginPage extends StatelessWidget {
                       CustomButton(
                         buttonPress: () async {
                           if (formKey.currentState!.validate()) {
-                            final _authStatusResult =
-                                await _authService.logInUser(
+                            final authStatusResult =
+                                await authService.logInUser(
                                     password: passwordController.text,
                                     email: emailController.text);
-                            if (_authStatusResult != null) {
+                            if (authStatusResult != null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   customSnackBar(
-                                      "Login Succesfull",
+                                      "Login Successful",
                                       screenWidth * 0.5,
                                       Colors.green.shade900));
                             } else {
