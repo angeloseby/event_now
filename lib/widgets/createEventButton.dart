@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:event_now/services/dbServices.dart';
+import 'package:event_now/pages/eventDetailsEditPage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 class CreateEventButton extends StatelessWidget {
   const CreateEventButton({super.key});
 
@@ -12,13 +11,9 @@ class CreateEventButton extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: (){
-        Overlay.of(context).build(context);
-        OverlayEntry(builder: (BuildContext context) {
-          return Container(
-            color: Colors.green,
-            width: 800,
-          );
-        });
+        Navigator.of(context).push(MaterialPageRoute(builder: (context){
+          return const EventDetailsEditPage();
+        }));
       },
       child: Container(
         decoration: BoxDecoration(

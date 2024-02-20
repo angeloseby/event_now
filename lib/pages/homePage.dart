@@ -1,5 +1,5 @@
 import 'package:event_now/services/authServices.dart';
-import 'package:event_now/widgets/createEvent.dart';
+import 'package:event_now/widgets/createEventButton.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
