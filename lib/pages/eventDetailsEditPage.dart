@@ -1,7 +1,6 @@
-import 'package:event_now/widgets/customDropDown.dart';
-import 'package:event_now/widgets/customTextField.dart';
+import 'package:event_now/widgets/customDetailsTextField.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EventDetailsEditPage extends StatelessWidget {
   const EventDetailsEditPage({super.key});
@@ -24,25 +23,30 @@ class EventDetailsEditPage extends StatelessWidget {
         ),
       ),
       body: Form(
+        key: formKey,
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CustomTextField(
-                iconName: FontAwesomeIcons.ticket,
-                hintText: "Event Name ",
-                fieldWidth: screenWidth * 0.35,
-                fieldHeight: screenHeight * 0.080,
-                obscureText: false,
-                formKey: formKey,
-                controller: eventNameController,
-              ),
-              CustomDropDown(
-                dropDownWidth: screenWidth * 0.35,
-                dropDownHeight: screenHeight * 0.080,
-                dropDownBgColor: const Color.fromRGBO(75, 22, 128, 1.0),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //Event Name
+                CustomDetailsTextField(
+                  eventNameController: eventNameController,
+                  hintText: "Event Name",
+                ),
+                //Event Description
+                CustomDetailsTextField(
+                  eventNameController: eventNameController,
+                  hintText: "Event Description",
+                )
+                //Event Type
+                //Event Mode
+                //Event Starting Date and Time
+                //Event Ending Date and Time
+                //Event Status
+                //Event Visibility
+              ],
+            ),
           ),
         ),
       ),
