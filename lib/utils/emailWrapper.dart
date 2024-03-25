@@ -16,6 +16,7 @@ class EmailWrapper extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final AppUser? _appUser = snapshot.data;
+          // ignore: unnecessary_null_comparison
           return _appUser!.email == null
               ? const CircularProgressIndicator()
               : AutoSizeText.rich(

@@ -43,6 +43,7 @@ dependencies:
   lottie: 
   provider: ^6.1.1
   cloud_firestore:
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

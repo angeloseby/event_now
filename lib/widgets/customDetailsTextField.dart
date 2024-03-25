@@ -4,11 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomDetailsTextField extends StatelessWidget {
   const CustomDetailsTextField({
     super.key,
-    required this.eventNameController,
+    required this.fieldController,
     required this.hintText,
   });
 
-  final TextEditingController eventNameController;
+  final TextEditingController fieldController;
   final String hintText;
 
   @override
@@ -29,7 +29,7 @@ class CustomDetailsTextField extends StatelessWidget {
         ),
       ),
       child: TextFormField(
-        controller: eventNameController,
+        controller: fieldController,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: hintText,
